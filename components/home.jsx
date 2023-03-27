@@ -36,7 +36,7 @@ function Home() {
           value={searchQuery}
         />
         <TouchableOpacity >
-          <Ionicons name="search-circle" size={54} color="#94C11C" />
+          <Ionicons name="search-circle" size={60} color="#94C11C" />
         </TouchableOpacity>
 
       </View>
