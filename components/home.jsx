@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 
 import Cancha from './cancha';
+import Calendario from './calendario';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -49,13 +50,9 @@ function Home() {
       </View>
       <View style={{ flex: 5}} >
         <ScrollView  showsVerticalScrollIndicator={false} >
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
+          {/* <Cancha parametros={parametros} /> */}
+          <Calendario />
+         
         </ScrollView>
       </View>
     </View>
