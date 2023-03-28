@@ -7,6 +7,13 @@ import { Ionicons } from '@expo/vector-icons';
 
 function Home() {
   const [searchQuery, setSearchQuery] = React.useState('');
+  
+  const parametros = {
+    titulo: 'Titulo de la canch',
+    direccion: 'direccion de la cancha',
+    horario: '8:00am - 10:00pm', 
+    imagen: require("../img/canchas/1.jpg"),
+  };
 
   const handleSearch = (text) => {
     setSearchQuery(text);
@@ -22,7 +29,7 @@ function Home() {
         },
       ]}>
       <View style={{ flex: 1, flexDirection: 'row', alignItems: "center" }} >
-        <Image source={{ uri: 'https://futbolcracks.com/wp-content/uploads/2020/04/logo_FUTBOLCRACKS.COM_4_20_AF_Mesa-de-trabajo-1.png' }}
+        <Image source={require('../assets/logo.png')}
           style={{ width: 80, height: 100 }} />
         <TextInput
           style={{ height: 40, 
@@ -42,16 +49,13 @@ function Home() {
       </View>
       <View style={{ flex: 5}} >
         <ScrollView  showsVerticalScrollIndicator={false} >
-          <Cancha />
-          <Cancha />
-          <Cancha />
-          <Cancha />
-          <Cancha />
-          <Cancha />
-          <Cancha />
-          <Cancha />
-          <Cancha />
-          <Cancha />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
         </ScrollView>
       </View>
     </View>
