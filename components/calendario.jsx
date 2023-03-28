@@ -1,6 +1,7 @@
 // Description: Componente que muestra el dia actual y las horas disponibles para reservar
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, TextInput,Picker  } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, TextInput, Picker } from 'react-native';
+import { Picker as RNPicker } from '@react-native-picker/picker';
 
 
 function Calendario() {
@@ -13,7 +14,7 @@ function Calendario() {
         { label: 'Opción 1', value: 'opcion1' },
         { label: 'Opción 2', value: 'opcion2' },
         { label: 'Opción 3', value: 'opcion3' }
-      ];
+    ];
 
     return (
         <View
@@ -24,19 +25,19 @@ function Calendario() {
                 },
             ]}>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: "center" }} >
-            <Picker
-  selectedValue={selectedValue}
-  onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
->
-  {opciones.map((opcion, index) => (
-    <Picker.Item key={index} label={opcion.label} value={opcion.value} />
-  ))}
-</Picker>
-                <Image source={require('../assets/logo.png')} style={{ width: 80, height: 100 }} />             
+               
+                <Image source={require('../assets/logo.png')} style={{ width: 80, height: 100 }} />
             </View>
             <View style={{ flex: 5 }} >
                 <ScrollView showsVerticalScrollIndicator={false} >
-
+                <RNPicker
+                    selectedValue={selectedValue}
+                    onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                >
+                    {opciones.map((opcion, index) => (
+                        <RNPicker.Item key={index} label={opcion.label} value={opcion.value} />
+                    ))}
+                </RNPicker>
 
                 </ScrollView>
             </View>
