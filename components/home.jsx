@@ -50,8 +50,13 @@ function Home() {
       </View>
       <View style={{ flex: 5}} >
         <ScrollView  showsVerticalScrollIndicator={false} >
-          {/* <Cancha parametros={parametros} /> */}
-          <Calendario />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
+          <Cancha parametros={parametros} />
          
         </ScrollView>
       </View>
