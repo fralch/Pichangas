@@ -78,7 +78,18 @@ function Calendario() {
     };
     const HorizontalLine = () => {
         return <View style={styles.line} />;
-      };
+    };
+
+    const reservarTurno = (h) => {
+        console.log(h);
+        setHoras(horas.map((hora) => {
+            if (hora.hora === h) {
+                hora.disponible = false;
+            }
+            return hora;
+        }));
+    }
+
 
     return (
         <View
@@ -132,8 +143,14 @@ function Calendario() {
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                 }}
+                                                onPress={() => {reservarTurno( hora.hora);}}
                                             >
-                                                <AntDesign name="plussquare" size={40} color="#94C11C" />
+                                                {
+                                                    hora.disponible ?
+                                                        <AntDesign name="plussquare" size={40} color="#94C11C" />
+                                                        :
+                                                        <Text style={{ fontSize: 18, color: 'red' }} >No disponible</Text>
+                                                }
 
                                             </TouchableOpacity>
                                          
