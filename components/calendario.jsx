@@ -159,11 +159,12 @@ function Calendario() {
                                                     hora.disponible ?
                                                         <AntDesign name="plussquare" size={40} color="#94C11C" />
                                                         :
-                                                        <View style={{ flexDirection: 'row', alignItems: 'center' }} >
+                                                        <View style={{  alignItems: 'center' }} >
                                                             { hora.data.estado=="confirmado" ? <AntDesign name="checkcircle" size={24} color="#94C11C" /> : <AntDesign name="clockcircleo" size={24} color="#94C11C" />}
                                                             <Text style={{ fontSize: 18, fontWeight: 'bold' }} >{hora.data.cliente}</Text>
+
                                                             
-                                                            
+                                                            { hora.data.estado=="confirmado" ? <Text style={{ fontSize: 14}} >Horario reservado</Text> : <Text style={{ fontSize: 14}} >Tienes 1 hora para confirmar tu reservación</Text>}
                                                         </View>
 
                                                 }
