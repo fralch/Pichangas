@@ -85,8 +85,18 @@ function Calendario() {
         setHoras(horas.map((hora) => {
             if (hora.hora === h) {
                 hora.disponible = false;
-            }
+                hora.data = {
+                    fecha: dateToString(date),
+                    hora: h,
+                    cliente: 'Juan Perez',
+                    telefono: '123456789',
+                    email: 'ingfralch@gmail.com',
+                    estado: 'pendiente'
+
+                } 
+            }  
             return hora;
+            
         }));
     }
 
@@ -149,7 +159,13 @@ function Calendario() {
                                                     hora.disponible ?
                                                         <AntDesign name="plussquare" size={40} color="#94C11C" />
                                                         :
-                                                        <Text style={{ fontSize: 18, color: 'red' }} >No disponible</Text>
+                                                        <View style={{ flexDirection: 'row', alignItems: 'center' }} >
+                                                            { hora.data.estado=="confirmado" ? <AntDesign name="checkcircle" size={24} color="#94C11C" /> : <AntDesign name="clockcircleo" size={24} color="#94C11C" />}
+                                                            <Text style={{ fontSize: 18, fontWeight: 'bold' }} >{hora.data.cliente}</Text>
+                                                            
+                                                            
+                                                        </View>
+
                                                 }
 
                                             </TouchableOpacity>
