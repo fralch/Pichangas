@@ -2,34 +2,38 @@
 import * as React from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity,
-    ScrollView, Image, TextInput, Picker, Button
+    ScrollView, Image, TextInput, Picker, Button,
+    Modal, Alert, Linking, Touchable
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker'
 
 
 import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 
 
 function Calendario() {
+    const [modalVisible, setModalVisible] = React.useState(false);
     const [dia, setDia] = React.useState('Lunes');
     const [horas, setHoras] = React.useState([
-        { hora: '8:00', disponible: true , data:{}},
-        { hora: '9:00', disponible: true , data:{}},
-        { hora: '10:00', disponible: true , data:{}},
-        { hora: '11:00', disponible: true , data:{}},
-        { hora: '12:00', disponible: true , data:{}},
-        { hora: '13:00', disponible: true , data:{}},
-        { hora: '14:00', disponible: true , data:{}},
-        { hora: '15:00', disponible: true , data:{}},
-        { hora: '16:00', disponible: true , data:{}},
-        { hora: '17:00', disponible: true , data:{}},
-        { hora: '18:00', disponible: true , data:{}},
-        { hora: '19:00', disponible: true , data:{}},
-        { hora: '20:00', disponible: true , data:{}},
-        { hora: '21:00', disponible: true , data:{}},
-        { hora: '22:00', disponible: true , data:{}},    
+        { hora: '8:00', disponible: true, data: {} },
+        { hora: '9:00', disponible: true, data: {} },
+        { hora: '10:00', disponible: true, data: {} },
+        { hora: '11:00', disponible: true, data: {} },
+        { hora: '12:00', disponible: true, data: {} },
+        { hora: '13:00', disponible: true, data: {} },
+        { hora: '14:00', disponible: true, data: {} },
+        { hora: '15:00', disponible: true, data: {} },
+        { hora: '16:00', disponible: true, data: {} },
+        { hora: '17:00', disponible: true, data: {} },
+        { hora: '18:00', disponible: true, data: {} },
+        { hora: '19:00', disponible: true, data: {} },
+        { hora: '20:00', disponible: true, data: {} },
+        { hora: '21:00', disponible: true, data: {} },
+        { hora: '22:00', disponible: true, data: {} },
     ]);
+    const [h, setH] = React.useState('');
 
     const [date, setDate] = React.useState(new Date());
     const [showDatePicker, setShowDatePicker] = React.useState(false);
@@ -93,13 +97,25 @@ function Calendario() {
                     email: 'ingfralch@gmail.com',
                     estado: 'pendiente'
 
-                } 
-            }  
+                }
+            }
             return hora;
-            
+
         }));
     }
-
+    const openWhatsAppWithMessage = () => {
+        let mensaje = ` 😎⚽ Quisiera confirmar mi reservación 🥅 🏃🏻para el dia ${dateToString(date)} a las ${h}`;
+        Linking.openURL('whatsapp://send?phone=961610362&text=' + mensaje);
+      };
+    
+           
+        const openYapeApp = async () => {
+            try {
+              await Linking.openURL('yape://app');
+            } catch (error) {
+              console.error('Error al abrir Yape', error);
+            }
+          };
 
     return (
         <View
@@ -138,39 +154,40 @@ function Calendario() {
                     {
                         horas.map((hora, index) => {
                             return (
-                                <View key={index} style={{ flex: 1, marginHorizontal: 5,  padding: 10, marginVertical: 5 }} >
+                                <View key={index} style={{ flex: 1, marginHorizontal: 5, padding: 10, marginVertical: 5 }} >
                                     <HorizontalLine />
-                                   
+
                                     <View style={{
                                         flex: 1,
                                         backgroundColor: '#F2F2F2',
                                         borderRadius: 10,
                                         padding: 10,
                                     }}>
-                                         <Text style={{ fontSize: 18 }} >{ hora.hora}</Text>
-                                            <TouchableOpacity
-                                                style={{
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                }}
-                                                onPress={() => {reservarTurno( hora.hora);}}
-                                            >
-                                                {
-                                                    hora.disponible ?
-                                                        <AntDesign name="plussquare" size={40} color="#94C11C" />
-                                                        :
-                                                        <View style={{  alignItems: 'center' }} >
-                                                            { hora.data.estado=="confirmado" ? <AntDesign name="checkcircle" size={24} color="#94C11C" /> : <AntDesign name="clockcircleo" size={24} color="#94C11C" />}
-                                                            <Text style={{ fontSize: 18, fontWeight: 'bold' }} >{hora.data.cliente}</Text>
+                                        <Text style={{ fontSize: 18 }} >{hora.hora}</Text>
+                                        <TouchableOpacity
+                                            style={{
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
+                                            onPress={() => { reservarTurno(hora.hora); }}
+                                        >
+                                            {
+                                                hora.disponible ?
+                                                    <AntDesign name="plussquare" size={40} color="#94C11C" />
+                                                    :
+                                                    <View style={{ alignItems: 'center' }} >
+                                                        {hora.data.estado == "confirmado" ? <AntDesign name="checkcircle" size={24} color="#94C11C" /> : <AntDesign name="clockcircleo" size={24} color="#94C11C" />}
+                                                        <Text style={{ fontSize: 18, fontWeight: 'bold' }} >{hora.data.cliente}</Text>
 
-                                                            
-                                                            { hora.data.estado=="confirmado" ? <Text style={{ fontSize: 14}} >Horario reservado</Text> : <Text style={{ fontSize: 14}} >Tienes 1 hora para confirmar tu reservación</Text>}
-                                                        </View>
 
-                                                }
+                                                        {hora.data.estado == "confirmado" ? <Text style={{ fontSize: 14 }} >Horario reservado</Text> : <Text style={{ fontSize: 14 }} >Tienes 1 hora para confirmar tu reservación</Text>}
+                                                        <Button onPress={() => { setModalVisible(true); setH(hora.hora)}}title="Paga con YAPE" color={'#7ead00'}/>
+                                                    </View>
 
-                                            </TouchableOpacity>
-                                         
+                                            }
+
+                                        </TouchableOpacity>
+
                                     </View>
                                 </View>
                             )
@@ -178,6 +195,69 @@ function Calendario() {
                     }
 
                 </ScrollView>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert("Modal has been closed.");
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={{ marginTop: '30%', backgroundColor: '#fff', padding: 16 , elevation: 5, width:'80%', marginLeft:'10%', }}>
+                        
+                            <Image  source={require('../img/qr/qrFrank.jpg')} 
+                                    style={{ width: 300, 
+                                            height: 300, 
+                                            padding: 0,
+                                            alignSelf: 'center',
+                                            
+                                        }} />
+                            
+                            <Text style={{ alignSelf:"center", textAlign:"center"}}> 
+                                Escanea el código QR con tu Yape y paga tu reservación
+                            </Text>
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                    openWhatsAppWithMessage();
+                                }}
+                                style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    backgroundColor: '#7ead00',
+                                    padding: 10,
+                                    borderRadius: 5,
+                                    marginVertical: 10,
+                                    elevation: 5,
+                                }}
+                            >
+                              <Text style={{
+                                color: '#fff',
+                                fontWeight: 'bold',
+                                fontSize: 16,
+                                marginRight: 10,
+                                marginBottom: 2,
+                                
+                              }}>
+                                <FontAwesome name="whatsapp" size={24} color="white" />  WhatsApp
+                              </Text>
+                            </TouchableOpacity>
+                            
+                            
+                            <Button
+                                onPress={() => {
+                                    setModalVisible(!modalVisible);
+                                }}
+                                title="Cerrar"
+                                color={'#555'}
+                                
+                            />
+                      
+                    </View>
+                </Modal>
+                
             </View>
         </View>
     );
@@ -194,7 +274,7 @@ const styles = StyleSheet.create({
         width: '90%',
         alignSelf: 'center',
         marginVertical: 10,
-      },
+    },
 
 });
 
