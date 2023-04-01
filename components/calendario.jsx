@@ -150,7 +150,7 @@ function Calendario() {
                 )}
             </View>
                 <TouchableOpacity style={{flexDirection:"row"}}>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginRight:10, marginTop:20, marginBottom:5 }} >Nombre CanchaDeportiva</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginRight:10, marginTop:20, marginBottom:5 }} >Fotos de CanchaDeportiva</Text>
                     <AntDesign name="right" size={20} color="black" style={{marginTop:24}} />
                 </TouchableOpacity>
             <View style={{ flex: 5 }} >
