@@ -79,9 +79,7 @@ function CanchaDetalle(props) {
 
                 </View>
             </ScrollView>
-                <TouchableOpacity style={styles.floatingButton}>
-                    <Text style={styles.buttonText}>+</Text>
-                </TouchableOpacity>
+               
             </View>
         </View>
     );
@@ -93,23 +91,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 20,
     },
-    floatingButton: {
-    position: 'absolute',
-    width: 60,
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 20,
-    bottom: 20,
-    backgroundColor: 'blue',
-    borderRadius: 30,
-    elevation: 3, // Agrega sombra al botón
-  },
-  buttonText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
+   
 });
 
 export default CanchaDetalle;
