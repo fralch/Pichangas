@@ -18,9 +18,9 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen name="Home" options={{headerShown: false}} component={Home} /> */}
+        <Stack.Screen name="Home" options={{headerShown: false}} component={Home} />
         {/* <Stack.Screen name="Calendario" options={{headerShown: false}} component={Calendario} /> */}
-        <Stack.Screen name="CanchaDetalle" options={{headerShown: false}} component={CanchaDetalle} />
+        {/* <Stack.Screen name="CanchaDetalle" options={{headerShown: false}} component={CanchaDetalle} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
