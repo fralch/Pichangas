@@ -9,6 +9,7 @@ import Home from './components/home';
 import Calendario from './components/calendario';
 import CanchaDetalle from './components/canchadetalle';
 import Usuario from './components/usuario';
+import CrearUsuario from './components/crearusuario';
 
 
 const Stack = createNativeStackNavigator();
@@ -22,7 +23,8 @@ function App() {
         {/* <Stack.Screen name="Home" options={{headerShown: false}} component={Home} /> */}
         {/* <Stack.Screen name="Calendario" options={{headerShown: false}} component={Calendario} /> */}
         {/* <Stack.Screen name="CanchaDetalle" options={{headerShown: false}} component={CanchaDetalle} /> */}
-        <Stack.Screen name="Usuario" options={{headerShown: false}} component={Usuario} />
+        {/* <Stack.Screen name="Usuario" options={{headerShown: false}} component={Usuario} /> */}
+        <Stack.Screen name="CrearUsuario" options={{headerShown: false}} component={CrearUsuario} />
       </Stack.Navigator>
     </NavigationContainer>
   );
