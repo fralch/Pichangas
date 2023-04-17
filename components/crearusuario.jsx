@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Modal } from 'react-native';
+import { removeSesion, getSesion, storeSesion } from '../hooks/handleSession.js';
+import { useNavigation } from '@react-navigation/native';
 
 import { FontAwesome } from '@expo/vector-icons';
 
 function CrearUsuario(props) {
+    const navigation = useNavigation();
+
     const [modalVisible, setModalVisible] = useState(false);
     const [datosCrearUsuario, setDatosCrearUsuario] = useState({
         nombres: '',
@@ -17,6 +21,8 @@ function CrearUsuario(props) {
         const { password, password2 } = datosCrearUsuario;
         if (password === password2) {
             console.log('Las contraseñas son iguales');
+            storeSesion(JSON.stringify(datosCrearUsuario));
+            navigation.navigate('Home');
         }else{
             console.log('Las contraseñas no son iguales');
         }

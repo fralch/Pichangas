@@ -1,8 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Animated, PanResponder, Linking } from 'react-native';
+import { removeSesion, getSesion, storeSesion } from '../hooks/handleSession.js';
+import { useNavigation } from '@react-navigation/native';
 
 function Usuario(props) {
+    const navigation = useNavigation();
+
     const [text, setText] = useState('');
+
+    useEffect(() => {
+        getSesion().then((res) => {
+            console.log(res);
+            if (res == null) {
+                props.navigation.navigate('Login');
+            }
+        });
+    }, []);
+
+    const cerrarSesion = () => {
+        removeSesion();
+        navigation.navigate('Login');
+    }
+
     return (
         <View style={styles.container}>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "space-between" }} >
@@ -46,7 +65,9 @@ function Usuario(props) {
                             marginTop: 10,
                             marginBottom: 10,
                         }}
-                            onPress={{}}
+                            onPress={
+                                () => cerrarSesion()
+                            }
                         >
                             <Text style={{ textAlign: 'center', fontSize: 15, fontWeight: 'bold' }}>Cerrar Sesión</Text>
                         </TouchableOpacity>
