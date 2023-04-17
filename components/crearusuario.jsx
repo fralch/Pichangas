@@ -1,9 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView,  } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Modal } from 'react-native';
 
 import { FontAwesome } from '@expo/vector-icons';
 
 function CrearUsuario(props) {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [datosCrearUsuario, setDatosCrearUsuario] = useState({
+        nombres: '',
+        correo: '',
+        telefono: '',
+        password: '',
+        password2: '',
+    });
+
+    const crearUser = () => {
+        const { password, password2 } = datosCrearUsuario;
+        if (password === password2) {
+            console.log('Las contraseñas son iguales');
+        }else{
+            console.log('Las contraseñas no son iguales');
+        }
+
+    };
 
     return (
         <View style={styles.container}>
@@ -59,7 +77,14 @@ function CrearUsuario(props) {
                         }}>
                             <Text style={[styles.texto, {width: '30%'}]}>Nombres</Text>
                             
-                            <TextInput style={[styles.input, , {width: '70%'}]} />
+                            <TextInput style={[styles.input, , {width: '70%'}]} 
+                                onChangeText={(text) => {
+                                    setDatosCrearUsuario({
+                                        ...datosCrearUsuario,
+                                        nombres: text,
+                                    })
+                                }
+                            } />
                         </View>
                         <View style={{
                             flexDirection: 'row',
@@ -68,7 +93,16 @@ function CrearUsuario(props) {
                             marginBottom: 10,
                         }}>
                             <Text style={[styles.texto, {width: '30%'}]}>Correo</Text>
-                            <TextInput style={[styles.input, , {width: '70%'}]} />
+                            <TextInput   keyboardType="email-address" style={[styles.input, , {width: '70%'}]}   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                             onChangeText={
+                                (text) => {
+                                    setDatosCrearUsuario({
+                                        ...datosCrearUsuario,
+                                        correo: text,
+                                    })
+                                }
+                             }
+                             />
                         </View>
                         <View style={{
                             flexDirection: 'row',
@@ -77,7 +111,16 @@ function CrearUsuario(props) {
                             marginBottom: 10,
                         }}>
                             <Text style={[styles.texto, {width: '30%'}]}>Telefono</Text>
-                            <TextInput style={[styles.input, , {width: '70%'}]} />
+                            <TextInput  keyboardType='numeric' style={[styles.input, , {width: '70%'}]} 
+                                onChangeText={
+                                    (text) => {
+                                        setDatosCrearUsuario({
+                                            ...datosCrearUsuario,
+                                            telefono: text,
+                                        })
+                                    }
+                                }
+                            />
                         </View>
                         <View style={{
                             flexDirection: 'row',
@@ -86,7 +129,16 @@ function CrearUsuario(props) {
                             
                         }}>
                             <Text style={[styles.texto, {width: '30%'}]} >Contraseña</Text>
-                            <TextInput style={[styles.input, , {width: '70%'}]} />
+                            <TextInput secureTextEntry  style={[styles.input, , {width: '70%'}]}  
+                            onChangeText={
+                                (text) => {
+                                    setDatosCrearUsuario({
+                                        ...datosCrearUsuario,
+                                        password: text,
+                                    })
+                                }
+                            }
+                            />
                         </View>
                         <View style={{
                             flexDirection: 'row',
@@ -94,7 +146,16 @@ function CrearUsuario(props) {
                             justifyContent: "space-between",
                         }}>
                             <Text style={[styles.texto, {width: '30%'}]} >Confirmar Contraseña</Text>
-                            <TextInput style={[styles.input, , {width: '70%'}]} />
+                            <TextInput secureTextEntry  style={[styles.input, , {width: '70%'}]} 
+                             onChangeText={
+                                (text) => {
+                                    setDatosCrearUsuario({
+                                        ...datosCrearUsuario,
+                                        password2: text,
+                                    })
+                                }
+                             } 
+                             />
                         </View>
                         <TouchableOpacity style={{
                             backgroundColor: '#94C11C',
@@ -105,15 +166,86 @@ function CrearUsuario(props) {
                             marginTop: 10,
                             marginBottom: 10,
                         }}
-                            onPress={{}}
+                            onPress={
+                                () => { crearUser() }
+                            }
                         >
                             <Text style={{ textAlign: 'center', fontSize: 15, fontWeight: 'bold', color: '#fff' }}>Crear Usuario</Text>
                         </TouchableOpacity>
                     </View>
-
+                    <TouchableOpacity style={{
+                            backgroundColor: 'black',
+                            padding: 10,
+                            alignSelf: 'center',
+                            width: '90%',
+                            borderRadius: 10,
+                            marginTop: 10,
+                            marginBottom: 10,
+                        }}
+                            onPress={
+                                () => { setModalVisible(!modalVisible); }
+                            }
+                        >
+                            <Text style={{ textAlign: 'center', fontSize: 15, fontWeight: 'bold', color: '#fff' }}>LOGIN</Text>
+                        </TouchableOpacity>
                 </ScrollView>
-
             </View>
+            <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => {}} >
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                }}>
+                    <View style={{
+                        backgroundColor: '#fff',
+                        padding: 20,
+                        width: '90%',
+                        borderRadius: 10,
+                    }}>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 }}>Login</Text>
+                        <View style={{  justifyContent: 'space-between' }}>
+                           {/* Crear Login */}
+                            <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: 10, marginBottom: 10 }}>Correo</Text>
+                            <TextInput style={styles.input} />
+                            <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: 10, marginBottom: 10 }}>Contraseña</Text>
+                            <TextInput secureTextEntry style={styles.input} />
+                            <TouchableOpacity style={{
+                                backgroundColor: '#94C11C',
+                                padding: 10,
+                                width: '100%',
+                                borderRadius: 10,
+                                marginTop: 10,
+                                marginBottom: 10,
+                            }}
+                                onPress={{}}
+                            >
+                                <Text style={{ textAlign: 'center', fontSize: 15, fontWeight: 'bold', color: '#fff' }}>Iniciar Sesión</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{
+                                backgroundColor: 'black',
+                                padding: 10,
+                                width: '100%',
+                                borderRadius: 10,
+                                marginTop: 10,
+                                marginBottom: 10,
+                            }}
+                                onPress={
+                                    () => { setModalVisible(!modalVisible); }
+                                }
+                            >
+                                <Text style={{ textAlign: 'center', fontSize: 15, fontWeight: 'bold', color: '#fff' }}>Cerrar</Text>
+                            </TouchableOpacity>
+
+
+
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+                    
         </View>
     );
 }

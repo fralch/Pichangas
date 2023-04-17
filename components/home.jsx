@@ -3,13 +3,16 @@ import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView,
 
 import Cancha from './cancha';
 import Calendario from './calendario';
+import { removeSesion, getSesion } from '../hooks/handleSession.js';
+import { useNavigation } from '@react-navigation/native';
 
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 function Home() {
-  const [searchQuery, setSearchQuery] = React.useState('');
+    const [searchQuery, setSearchQuery] = React.useState('');
+    const navigation = useNavigation();
   //-----------------------
         // Estado que indica si el menú está visible o no
         const [menuVisible, setMenuVisible] = useState(false);
@@ -57,6 +60,17 @@ function Home() {
   const openWhatsAppWithMessage = () => {
     let mensaje = ` 😁⚽ Tengo una cancha deportiva y quiero trabajar con ustedes 🥅 🏃🏻`;
     Linking.openURL('whatsapp://send?phone=961610362&text=' + mensaje);
+  };
+  
+  const checkSesion = async () => {
+    console.log("Checando sesion");
+    const sesion = await getSesion();
+    if (sesion == null) {
+      navigation.navigate('CrearUsuario');
+    } else {
+      console.log("Hay sesion");
+      navigation.navigate('Usuario');
+    }
   };
 
   return (
@@ -115,16 +129,23 @@ function Home() {
           }}>
             <AntDesign name="doubleright" size={24} color="#94C11C" />
           </TouchableOpacity>
-          <TouchableOpacity style={{
-            width: 50,
-            height: 50,
-            backgroundColor: '#94C11C',
-            borderRadius: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 20,
+          <TouchableOpacity
+            onPress={() => {
+              checkSesion();
+              }
+            }
 
-          }} >
+            style={{
+              width: 50,
+              height: 50,
+              backgroundColor: '#94C11C',
+              borderRadius: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: 20,
+            }} 
+            
+          >
             
             <AntDesign name="user" size={24} color="white" />
           </TouchableOpacity>
