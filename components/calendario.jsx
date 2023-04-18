@@ -6,6 +6,7 @@ import {
     Modal, Alert, Linking, Touchable
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { useNavigation } from '@react-navigation/native';
 
 
 import { AntDesign } from '@expo/vector-icons';
@@ -13,7 +14,9 @@ import { FontAwesome } from '@expo/vector-icons';
 
 
 
-function Calendario() {
+function Calendario(props) {
+    const navigation = useNavigation();
+
     const [modalVisible, setModalVisible] = React.useState(false);
     const [dia, setDia] = React.useState('Lunes');
     const [horas, setHoras] = React.useState([
@@ -37,6 +40,12 @@ function Calendario() {
 
     const [date, setDate] = React.useState(new Date());
     const [showDatePicker, setShowDatePicker] = React.useState(false);
+
+    React.useEffect(() => {
+        // console.log(props);
+        console.log(props.route.params);
+        //console.log(props.route.params.id);
+    }, []);
 
     const handleDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -117,6 +126,10 @@ function Calendario() {
             }
           };
 
+    const irCanchaDetalle = () => {
+        navigation.navigate('CanchaDetalle', { id:1});
+    }
+
     return (
         <View
             style={[
@@ -149,7 +162,7 @@ function Calendario() {
                     />
                 )}
             </View>
-                <TouchableOpacity style={{flexDirection:"row"}}>
+                <TouchableOpacity style={{flexDirection:"row"}} onPress={irCanchaDetalle} >
                     <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginRight:10, marginTop:20, marginBottom:5 }} >Fotos de CanchaDeportiva</Text>
                     <AntDesign name="right" size={20} color="black" style={{marginTop:24}} />
                 </TouchableOpacity>

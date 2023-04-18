@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 function Cancha(props) {
-  
+
+  const navigation = useNavigation();
+
+  const irCalendario = () => {
+    navigation.navigate('Calendario', {id: 1});
+  }
 
   return (
     <View style={styles.container}>
-      <View style={{flexDirection:"row", paddingVertical:10}}>
+      <TouchableOpacity style={{flexDirection:"row", paddingVertical:10}} onPress={irCalendario}>
         <Image source={props.parametros.imagen}
 
         
@@ -21,7 +27,7 @@ function Cancha(props) {
 
 
 
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }
