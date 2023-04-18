@@ -73,6 +73,8 @@ function Home() {
     }
   };
 
+  
+
   return (
     <View style={styles.container}>
     <Animated.View
