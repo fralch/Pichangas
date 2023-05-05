@@ -42,9 +42,7 @@ function Calendario(props) {
     const [showDatePicker, setShowDatePicker] = React.useState(false);
 
     React.useEffect(() => {
-        // console.log(props);
-        console.log(props.route.params);
-        //console.log(props.route.params.id);
+        // console.log(props.route.params);
     }, []);
 
     const handleDateChange = (event, selectedDate) => {
@@ -127,7 +125,8 @@ function Calendario(props) {
           };
 
     const irCanchaDetalle = () => {
-        navigation.navigate('CanchaDetalle', { id:1});
+        const parametros = props.route.params;
+        navigation.navigate('CanchaDetalle', parametros);
     }
 
     return (
@@ -163,7 +162,7 @@ function Calendario(props) {
                 )}
             </View>
                 <TouchableOpacity style={{flexDirection:"row"}} onPress={irCanchaDetalle} >
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginRight:10, marginTop:20, marginBottom:5 }} >Fotos de CanchaDeportiva</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginRight:10, marginTop:20, marginBottom:5 }} >Fotos de {props.route.params.cancha}</Text>
                     <AntDesign name="right" size={20} color="black" style={{marginTop:24}} />
                 </TouchableOpacity>
             <View style={{ flex: 5 }} >

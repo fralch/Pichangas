@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Animated, PanResponder, Linking  } from 'react-native';
 
 import Cancha from './cancha';
@@ -13,6 +13,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 function Home() {
     const [searchQuery, setSearchQuery] = React.useState('');
     const navigation = useNavigation();
+    const [canchas, setCanchas] = useState([]);
   //-----------------------
         // Estado que indica si el menú está visible o no
         const [menuVisible, setMenuVisible] = useState(false);
@@ -72,7 +73,18 @@ function Home() {
       navigation.navigate('Usuario');
     }
   };
-
+  useEffect(() => {
+    // accediendo a la api y obtener las canchas
+    fetch('http://192.168.1.50:3000/canchas')
+      .then((response) => response.json())
+      .then((json) => {
+        setCanchas(json);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        // setLoading(false);
+      });
+  }, []);
   
 
   return (
@@ -108,13 +120,11 @@ function Home() {
       </View>
       <View style={{ flex: 5}} >
         <ScrollView  showsVerticalScrollIndicator={false} >
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
-          <Cancha parametros={parametros} />
+          {
+            canchas.map((cancha, index) => (
+              <Cancha key={index} parametros={cancha} />
+            ))
+          }
          
         </ScrollView>
       </View>
