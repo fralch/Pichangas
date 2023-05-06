@@ -10,19 +10,35 @@ function CrearUsuario(props) {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [datosCrearUsuario, setDatosCrearUsuario] = useState({
-        nombres: '',
-        correo: '',
+        nombre: '',
+        email: '',
         telefono: '',
         password: '',
         password2: '',
+        estado: 1,
     });
 
     const crearUser = () => {
         const { password, password2 } = datosCrearUsuario;
         if (password === password2) {
             console.log('Las contraseñas son iguales');
-            storeSesion(JSON.stringify(datosCrearUsuario));
-            navigation.navigate('Home');
+            console.log(JSON.stringify(datosCrearUsuario));
+            fetch('http://192.168.1.50:3000/usuarios', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datosCrearUsuario)
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+            // storeSesion(JSON.stringify(datosCrearUsuario));
+            // navigation.navigate('Home');
         }else{
             console.log('Las contraseñas no son iguales');
         }
@@ -87,7 +103,7 @@ function CrearUsuario(props) {
                                 onChangeText={(text) => {
                                     setDatosCrearUsuario({
                                         ...datosCrearUsuario,
-                                        nombres: text,
+                                        nombre: text,
                                     })
                                 }
                             } />
@@ -104,7 +120,7 @@ function CrearUsuario(props) {
                                 (text) => {
                                     setDatosCrearUsuario({
                                         ...datosCrearUsuario,
-                                        correo: text,
+                                        email: text,
                                     })
                                 }
                              }
@@ -118,6 +134,7 @@ function CrearUsuario(props) {
                         }}>
                             <Text style={[styles.texto, {width: '30%'}]}>Telefono</Text>
                             <TextInput  keyboardType='numeric' style={[styles.input, , {width: '70%'}]} 
+                                placeholder='Opccional'
                                 onChangeText={
                                     (text) => {
                                         setDatosCrearUsuario({
