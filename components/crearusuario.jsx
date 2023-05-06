@@ -9,6 +9,7 @@ function CrearUsuario(props) {
     const navigation = useNavigation();
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [validar, setValidar] = useState(false);
     const [datosCrearUsuario, setDatosCrearUsuario] = useState({
         nombre: '',
         email: '',
@@ -19,10 +20,30 @@ function CrearUsuario(props) {
     });
 
     const crearUser = () => {
+        setValidar(false);
         const { password, password2 } = datosCrearUsuario;
         if (password === password2) {
-            console.log('Las contraseñas son iguales');
-            console.log(JSON.stringify(datosCrearUsuario));
+            if (datosCrearUsuario.nombre === '') {
+                console.log('El nombre es obligatorio');
+                setValidar(true);
+                return;
+            }
+            if (datosCrearUsuario.email === '') {
+                console.log('El email es obligatorio');
+                setValidar(true);
+                return;
+            }
+            if (datosCrearUsuario.password === '') {
+                console.log('La contraseña es obligatoria');
+                setValidar(true);
+                return;
+            }
+            if (datosCrearUsuario.password2 === '') {
+                console.log('La confirmación de contraseña es obligatoria');
+                setValidar(true);
+                return;
+            }
+
             fetch('http://192.168.1.50:3000/usuarios', {
                 method: 'POST',
                 headers: {
@@ -37,8 +58,8 @@ function CrearUsuario(props) {
             .catch((error) => {
                 console.log(error);
             });
-            // storeSesion(JSON.stringify(datosCrearUsuario));
-            // navigation.navigate('Home');
+            storeSesion(JSON.stringify(datosCrearUsuario));
+            navigation.navigate('Home');
         }else{
             console.log('Las contraseñas no son iguales');
         }
@@ -99,7 +120,7 @@ function CrearUsuario(props) {
                         }}>
                             <Text style={[styles.texto, {width: '30%'}]}>Nombres</Text>
                             
-                            <TextInput style={[styles.input, , {width: '70%'}]} 
+                            <TextInput style={[styles.input, , {width: '70%',  borderColor: validar ? 'red' : 'gray'},]} 
                                 onChangeText={(text) => {
                                     setDatosCrearUsuario({
                                         ...datosCrearUsuario,
@@ -115,7 +136,7 @@ function CrearUsuario(props) {
                             marginBottom: 10,
                         }}>
                             <Text style={[styles.texto, {width: '30%'}]}>Correo</Text>
-                            <TextInput   keyboardType="email-address" style={[styles.input, , {width: '70%'}]}   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                            <TextInput   keyboardType="email-address" style={[styles.input, , {width: '70%', borderColor: validar ? 'red' : 'gray'}]}   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                              onChangeText={
                                 (text) => {
                                     setDatosCrearUsuario({
@@ -152,7 +173,7 @@ function CrearUsuario(props) {
                             
                         }}>
                             <Text style={[styles.texto, {width: '30%'}]} >Contraseña</Text>
-                            <TextInput secureTextEntry  style={[styles.input, , {width: '70%'}]}  
+                            <TextInput secureTextEntry  style={[styles.input, , {width: '70%',  borderColor: validar ? 'red' : 'gray'}]}  
                             onChangeText={
                                 (text) => {
                                     setDatosCrearUsuario({
@@ -169,7 +190,7 @@ function CrearUsuario(props) {
                             justifyContent: "space-between",
                         }}>
                             <Text style={[styles.texto, {width: '30%'}]} >Confirmar Contraseña</Text>
-                            <TextInput secureTextEntry  style={[styles.input, , {width: '70%'}]} 
+                            <TextInput secureTextEntry  style={[styles.input, , {width: '70%', borderColor: validar ? 'red' : 'gray'}]} 
                              onChangeText={
                                 (text) => {
                                     setDatosCrearUsuario({
