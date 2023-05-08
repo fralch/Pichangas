@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Animated, PanResponder, Linking } from 'react-native';
 import { removeSesion, getSesion, storeSesion } from '../hooks/handleSession.js';
 import { useNavigation } from '@react-navigation/native';
-
+import { FontAwesome } from '@expo/vector-icons';
 function Usuario(props) {
     const navigation = useNavigation();
 
@@ -12,14 +12,14 @@ function Usuario(props) {
         getSesion().then((res) => {
             console.log(res);
             if (res == null) {
-                props.navigation.navigate('Login');
+                props.navigation.navigate('Home');
             }
         });
     }, []);
 
     const cerrarSesion = () => {
         removeSesion();
-        navigation.navigate('Login');
+        navigation.navigate('Home');
     }
 
     return (
@@ -52,7 +52,18 @@ function Usuario(props) {
 
                         alignSelf: 'center',
                     }}>
-                        <Image source={{uri:"https://www.labsaenzrenauld.com/wp-content/uploads/2020/10/Perfil-hombre-ba%CC%81sico_738242395.jpg"}} style={{ width: 100, height: 100, marginBottom: 10, borderRadius: 50}} />
+                         <View style={{
+                                    backgroundColor: '#94C11C',
+                                    padding: 10,
+                                    width: 100,
+                                    height: 100,
+                                    borderRadius: 100,
+                                    marginBottom: 10,
+                                    alignSelf: 'center',
+                                    justifyContent: 'center',
+                                }}>      
+                            <FontAwesome name="user" size={44} color="white" style={{alignSelf: 'center'}} />
+                        </View>
                         <Text style={styles.texto}><Text style={{ fontWeight: 'bold' }}>Nombre:</Text>  nombre de Usuario</Text>
                         <Text style={styles.texto}><Text style={{ fontWeight: 'bold' }}>Correo:</Text>  ingfralch@gmail.com</Text>
                         <Text style={styles.texto}><Text style={{ fontWeight: 'bold' }}>Telefono:</Text>  312 123 4567</Text>

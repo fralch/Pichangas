@@ -18,6 +18,10 @@ function CrearUsuario(props) {
         password2: '',
         estado: 1,
     });
+    const [login, setLogin] = useState({
+        email: '',
+        password: '',
+    });
 
     const crearUser = () => {
         setValidar(false);
@@ -66,6 +70,22 @@ function CrearUsuario(props) {
 
     };
 
+    const iniciarSesion = () => {
+        fetch('http://192.168.1.50:3000/usuarios/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(login)
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            storeSesion(JSON.stringify(data));
+            navigation.navigate('Home');
+        })
+    };
+
+
     return (
         <View style={styles.container}>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "space-between" }} >
@@ -94,8 +114,7 @@ function CrearUsuario(props) {
                         width: '90%',
                         alignSelf: 'center',
                     }}>
-                            <View>
-                                <TouchableOpacity style={{
+                            <View style={{
                                     backgroundColor: '#94C11C',
                                     padding: 10,
                                     width: 100,
@@ -104,11 +123,8 @@ function CrearUsuario(props) {
                                     marginBottom: 10,
                                     alignSelf: 'center',
                                     justifyContent: 'center',
-                                }}
-                                >
+                                }}>
                                     <FontAwesome name="user" size={44} color="white" style={{alignSelf: 'center'}} />
-                                </TouchableOpacity>
-
                                 </View>
 
 
@@ -252,9 +268,25 @@ function CrearUsuario(props) {
                         <View style={{  justifyContent: 'space-between' }}>
                            {/* Crear Login */}
                             <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: 10, marginBottom: 10 }}>Correo</Text>
-                            <TextInput style={styles.input} />
+                            <TextInput style={styles.input} 
+                                onChangeText={
+                                    (text) => {
+                                    setLogin({
+                                        ...login,
+                                        email: text,
+                                    })
+                                }}
+                             />
                             <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: 10, marginBottom: 10 }}>Contraseña</Text>
-                            <TextInput secureTextEntry style={styles.input} />
+                            <TextInput secureTextEntry style={styles.input}  
+                                onChangeText={
+                                    (text) => {
+                                    setLogin({
+                                        ...login,
+                                        password: text,
+                                    })
+                                }}
+                            />
                             <TouchableOpacity style={{
                                 backgroundColor: '#94C11C',
                                 padding: 10,
@@ -263,7 +295,9 @@ function CrearUsuario(props) {
                                 marginTop: 10,
                                 marginBottom: 10,
                             }}
-                                onPress={{}}
+                                onPress={
+                                    () => { iniciarSesion() }
+                                }
                             >
                                 <Text style={{ textAlign: 'center', fontSize: 15, fontWeight: 'bold', color: '#fff' }}>Iniciar Sesión</Text>
                             </TouchableOpacity>
