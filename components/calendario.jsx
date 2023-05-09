@@ -119,15 +119,12 @@ function Calendario(props) {
     };
 
     const reservarTurno = (h) => {
-            const datos_json = JSON.stringify({
-                hora: h, 
-                estado: false,
-                fecha: dateToString(date),
-                cancha_id: 1,
-                usuario_id: 1
-            });
-
-            console.log(datos_json);
+            const fecha = new Date();
+            const year = fecha.getFullYear();
+            const month = String(fecha.getMonth() + 1).padStart(2, '0');
+            const day = String(fecha.getDate()).padStart(2, '0');
+            const hoy = `${year}-${month}-${day}`;
+           
         
             fetch('http://192.168.1.50:3000/horarios', {
                 method: 'POST',
@@ -137,7 +134,7 @@ function Calendario(props) {
                 body: JSON.stringify({
                     hora: h, 
                     estado: false,
-                    fecha: dateToString(date),
+                    fecha: hoy,
                     cancha_id: 1,
                     usuario_id: 1
                 })
