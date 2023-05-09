@@ -42,8 +42,35 @@ function Calendario(props) {
     const [showDatePicker, setShowDatePicker] = React.useState(false);
 
     React.useEffect(() => {
-        // console.log(props.route.params);
-    }, []);
+        fetch('http://192.168.1.50:3000/horarios/diario', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            cancha_id: 1,
+            usuario_id: 1
+          })
+        })
+          .then((response) => response.json())
+          .then((json) => {
+            const horas_coincididas= horas.map((elemento) => {
+                                            const hora_coincide = json.find((hora) => hora.hora == elemento.hora);
+                                            if (hora_coincide) {
+                                                elemento.disponible = false;
+                                                elemento.data = hora_coincide;
+                                            }
+                                            return elemento;
+                                            
+                                           
+                                            }
+                                        );
+            
+            setHoras(horas_coincididas);
+
+            console.log(horas_coincididas);
+          });
+      }, []);
 
     const handleDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -92,14 +119,46 @@ function Calendario(props) {
     };
 
     const reservarTurno = (h) => {
-        console.log(h);
+            const datos_json = JSON.stringify({
+                hora: h, 
+                estado: false,
+                fecha: dateToString(date),
+                cancha_id: 1,
+                usuario_id: 1
+            });
+
+            console.log(datos_json);
+        
+            fetch('http://192.168.1.50:3000/horarios', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    hora: h, 
+                    estado: false,
+                    fecha: dateToString(date),
+                    cancha_id: 1,
+                    usuario_id: 1
+                })
+            })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        
+        
+
         setHoras(horas.map((hora) => {
             if (hora.hora === h) {
                 hora.disponible = false;
                 hora.data = {
                     fecha: dateToString(date),
                     hora: h,
-                    cliente: 'Juan Perez',
+                    cliente: 'Haz reservado',
                     telefono: '123456789',
                     email: 'ingfralch@gmail.com',
                     estado: 'pendiente'
@@ -109,6 +168,7 @@ function Calendario(props) {
             return hora;
 
         }));
+        
     }
     const openWhatsAppWithMessage = () => {
         let mensaje = ` 😎⚽ Quisiera confirmar mi reservación 🥅 🏃🏻para el dia ${dateToString(date)} a las ${h}`;
@@ -185,19 +245,18 @@ function Calendario(props) {
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
                                             }}
-                                            onPress={() => { reservarTurno(hora.hora); }}
+                                            onPress={() => {hora.disponible ? reservarTurno(hora.hora):  ()=>{}   }}
                                         >
                                             {
                                                 hora.disponible ?
                                                     <AntDesign name="plussquare" size={40} color="#94C11C" />
                                                     :
                                                     <View style={{ alignItems: 'center' }} >
-                                                        {hora.data.estado == "confirmado" ? <AntDesign name="checkcircle" size={24} color="#94C11C" /> : <AntDesign name="clockcircleo" size={24} color="#94C11C" />}
+                                                        {hora.data.estado == true ? <AntDesign name="checkcircle" size={24} color="#94C11C" /> : <AntDesign name="clockcircleo" size={24} color="#94C11C" />}
                                                         <Text style={{ fontSize: 18, fontWeight: 'bold' }} >{hora.data.cliente}</Text>
 
-
-                                                        {hora.data.estado == "confirmado" ? <Text style={{ fontSize: 14 }} >Horario reservado</Text> : <Text style={{ fontSize: 14 }} >Tienes 1 hora para confirmar tu reservación</Text>}
-                                                        <Button onPress={() => { setModalVisible(true); setH(hora.hora)}}title="Paga con YAPE" color={'#7ead00'}/>
+                                                        {hora.data.estado == true ? <Text style={{ fontSize: 14 }} >Horario reservado</Text> : <Text style={{ fontSize: 14 }} >1 hora para confirmar la reservación</Text>}
+                                                        {hora.data.estado == true ? <></> : <Button onPress={() => { setModalVisible(true); setH(hora.hora)}}title="Paga con YAPE" color={'#7ead00'}/>}
                                                     </View>
 
                                             }
