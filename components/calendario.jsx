@@ -47,11 +47,20 @@ function Calendario(props) {
     React.useEffect(() => {
         const obtenerUsuario = async () => {
             const usuario = await getSesion();
+            !usuario ? setUsuario({
+                id: 1,
+                nombre: 'Sin usuario',
+                apellido: 'Alchourron',
+                email: 'ingfralch@gmail.com',
+                telefono: '961610362',
+
+            }): 
             setUsuario(JSON.parse(usuario));
+            
         }
         obtenerUsuario();
         console.log(usuario);
-        console.log(props.route.params);
+        // console.log(props.route.params);
 
         fetch('http://192.168.1.50:3000/horarios/diario', {
           method: 'POST',
@@ -159,6 +168,7 @@ function Calendario(props) {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json);
+                console.log(usuario); 
             })
             .then(() => {
                 setHoras(horas.map((hora) => {
