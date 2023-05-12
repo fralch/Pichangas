@@ -6,15 +6,19 @@ import { FontAwesome } from '@expo/vector-icons';
 function Usuario(props) {
     const navigation = useNavigation();
 
-    const [text, setText] = useState('');
+    const [user, setUsuario] = useState(null);
 
     useEffect(() => {
-        getSesion().then((res) => {
-            console.log(res);
+        getSesion()
+        .then((res) => {
+            setUsuario(JSON.parse(res));
             if (res == null) {
                 props.navigation.navigate('Home');
             }
-        });
+        })
+        .then(() => {
+            // console.log(user);
+        })
     }, []);
 
     const cerrarSesion = () => {
@@ -23,6 +27,10 @@ function Usuario(props) {
     }
 
     return (
+        !user 
+        ? 
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Cargando...</Text></View> 
+        :
         <View style={styles.container}>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "space-between" }} >
                 <Image source={require('../assets/logo.png')} style={{ width: 80, height: 100, marginLeft: 10 }} />
@@ -64,9 +72,9 @@ function Usuario(props) {
                                 }}>      
                             <FontAwesome name="user" size={44} color="white" style={{alignSelf: 'center'}} />
                         </View>
-                        <Text style={styles.texto}><Text style={{ fontWeight: 'bold' }}>Nombre:</Text>  nombre de Usuario</Text>
-                        <Text style={styles.texto}><Text style={{ fontWeight: 'bold' }}>Correo:</Text>  ingfralch@gmail.com</Text>
-                        <Text style={styles.texto}><Text style={{ fontWeight: 'bold' }}>Telefono:</Text>  312 123 4567</Text>
+                        <Text style={styles.texto}><Text style={{ fontWeight: 'bold' }}>Nombre:</Text> { user.nombre}</Text>
+                        <Text style={styles.texto}><Text style={{ fontWeight: 'bold' }}>Correo:</Text> {user.email}</Text>
+                        <Text style={styles.texto}><Text style={{ fontWeight: 'bold' }}>Telefono:</Text> {user.telefono}</Text>
                         
                         <TouchableOpacity style={{
                             backgroundColor: '#F2F2F2',

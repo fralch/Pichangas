@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { useNavigation } from '@react-navigation/native';
-
+import { removeSesion, getSesion } from '../hooks/handleSession.js';
 
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -18,6 +18,7 @@ function Calendario(props) {
     const navigation = useNavigation();
 
     const [modalVisible, setModalVisible] = React.useState(false);
+    const [usuario, setUsuario] = React.useState({});
     const [dia, setDia] = React.useState('Lunes');
     const [horas, setHoras] = React.useState([
         { hora: '8:00', disponible: true, data: {} },
@@ -41,15 +42,25 @@ function Calendario(props) {
     const [date, setDate] = React.useState(new Date());
     const [showDatePicker, setShowDatePicker] = React.useState(false);
 
+
+
     React.useEffect(() => {
+        const obtenerUsuario = async () => {
+            const usuario = await getSesion();
+            setUsuario(JSON.parse(usuario));
+        }
+        obtenerUsuario();
+        console.log(usuario);
+        console.log(props.route.params);
+
         fetch('http://192.168.1.50:3000/horarios/diario', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            cancha_id: 1,
-            usuario_id: 1
+            cancha_id: props.route.params.id,
+            usuario_id: usuario.id? usuario.id: 1,
           })
         })
           .then((response) => response.json())
@@ -68,7 +79,7 @@ function Calendario(props) {
             
             setHoras(horas_coincididas);
 
-            console.log(horas_coincididas);
+            // console.log(horas_coincididas);
           });
       }, []);
 
@@ -76,7 +87,7 @@ function Calendario(props) {
         const currentDate = selectedDate || date;
         setShowDatePicker(false);
         setDate(currentDate);
-        console.log(currentDate);
+        // console.log(currentDate);
     };
 
     const dateToString = (date) => {
@@ -125,7 +136,13 @@ function Calendario(props) {
             const day = String(fecha.getDate()).padStart(2, '0');
             const hoy = `${year}-${month}-${day}`;
            
-        
+
+            console.log({hora: h, 
+                estado: false,
+                fecha: hoy,
+                cancha_id: props.route.params.id,
+                usuario_id: usuario.id? usuario.id: 1,
+            });
             fetch('http://192.168.1.50:3000/horarios', {
                 method: 'POST',
                 headers: {
@@ -135,13 +152,31 @@ function Calendario(props) {
                     hora: h, 
                     estado: false,
                     fecha: hoy,
-                    cancha_id: 1,
-                    usuario_id: 1
+                    cancha_id: props.route.params.id,
+                    usuario_id: usuario.id? usuario.id: 1,
                 })
             })
             .then((response) => response.json())
             .then((json) => {
                 console.log(json);
+            })
+            .then(() => {
+                setHoras(horas.map((hora) => {
+                    if (hora.hora === h) {
+                        hora.disponible = false;
+                        hora.data = {
+                            fecha: dateToString(date),
+                            hora: h,
+                            cliente: 'Haz reservado',
+                            telefono: '123456789',
+                            email: 'ingfralch@gmail.com',
+                            estado: 'pendiente'
+        
+                        }
+                    }
+                    return hora;
+        
+                }));
             })
             .catch((error) => {
                 console.error(error);
@@ -149,28 +184,13 @@ function Calendario(props) {
         
         
 
-        setHoras(horas.map((hora) => {
-            if (hora.hora === h) {
-                hora.disponible = false;
-                hora.data = {
-                    fecha: dateToString(date),
-                    hora: h,
-                    cliente: 'Haz reservado',
-                    telefono: '123456789',
-                    email: 'ingfralch@gmail.com',
-                    estado: 'pendiente'
-
-                }
-            }
-            return hora;
-
-        }));
+        
         
     }
     const openWhatsAppWithMessage = () => {
         let mensaje = ` 😎⚽ Quisiera confirmar mi reservación 🥅 🏃🏻para el dia ${dateToString(date)} a las ${h}`;
         Linking.openURL('whatsapp://send?phone=961610362&text=' + mensaje);
-      };
+    };
     
            
         const openYapeApp = async () => {
@@ -187,6 +207,10 @@ function Calendario(props) {
     }
 
     return (
+        !usuario 
+        ? 
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Cargando...</Text></View> 
+        :
         <View
             style={[
                 styles.container,
