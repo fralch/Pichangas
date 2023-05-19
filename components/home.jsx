@@ -31,7 +31,8 @@ function Home() {
     horario: '',
     email: '',
     telefono: '',
-    password: ''
+    password: '', 
+    estado: true,
   });
 
 
@@ -100,7 +101,19 @@ function Home() {
   }, []);
 
   const enviarDatosCancha = () => {
-    console.log(datos_cancha);
+    // console.log(datos_cancha);
+    fetch('http://192.168.1.50:3000/canchas',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(datos_cancha)
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json);
+      setModalVisible(!modalVisible);
+    }); 
   }
 
 
@@ -260,7 +273,7 @@ function Home() {
                   }}
               />
               <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: 10, marginBottom: 10 }}>Cancha</Text>
-              <TextInput secureTextEntry style={styles.input}
+              <TextInput  style={styles.input}
                 onChangeText={
                   (text) => {
                     setDatos_cancha({
@@ -270,7 +283,7 @@ function Home() {
                   }}
               />
               <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: 10, marginBottom: 10 }}>Dirección</Text>
-              <TextInput secureTextEntry style={styles.input}
+              <TextInput  style={styles.input}
                 onChangeText={
                   (text) => {
                     setDatos_cancha({
@@ -280,7 +293,7 @@ function Home() {
                   }}
               />
               <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: 10, marginBottom: 10 }}>Horario</Text>
-              <TextInput secureTextEntry style={styles.input}
+              <TextInput  style={styles.input}
                 onChangeText={
                   (text) => {
                     setDatos_cancha({
@@ -290,7 +303,7 @@ function Home() {
                   }}
               />
               <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: 10, marginBottom: 10 }}>Email</Text>
-              <TextInput secureTextEntry style={styles.input}
+              <TextInput  style={styles.input}
                 onChangeText={
                   (text) => {
                     setDatos_cancha({
@@ -300,7 +313,7 @@ function Home() {
                   }}
               />
               <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: 10, marginBottom: 10 }}>Telefono</Text>
-              <TextInput secureTextEntry style={styles.input}
+              <TextInput  style={styles.input}
                 onChangeText={
                   (text) => {
                     setDatos_cancha({
@@ -329,7 +342,7 @@ function Home() {
                 marginBottom: 10,
               }}
                 onPress={
-                  () => { }
+                  () => { enviarDatosCancha()}
                 }
               >
                 <Text style={{ textAlign: 'center', fontSize: 15, fontWeight: 'bold', color: '#fff' }}>Guardar</Text>
