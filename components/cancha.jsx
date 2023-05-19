@@ -11,7 +11,8 @@ function Cancha(props) {
   }
 
   const convertirFoto = (foto) => {
-    const foto_convertida=  JSON.parse(foto);
+    if(foto){
+      const foto_convertida=  JSON.parse(foto);
     const foto_url = "http://192.168.1.50:3000/uploads/"+foto_convertida[0].fotos;
     const imagen = {
       uri: foto_url,
@@ -20,6 +21,7 @@ function Cancha(props) {
     };
   
     return imagen;
+    }
   }      
 
   

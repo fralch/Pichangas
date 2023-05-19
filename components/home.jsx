@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Animated, PanResponder, Linking , Modal} from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Animated, PanResponder, Linking, Modal } from 'react-native';
 
 import Cancha from './cancha';
 import Calendario from './calendario';
@@ -98,6 +98,10 @@ function Home() {
         // setLoading(false);
       });
   }, []);
+
+  const enviarDatosCancha = () => {
+    console.log(datos_cancha);
+  }
 
 
   return (
@@ -315,6 +319,7 @@ function Home() {
                     })
                   }}
               />
+
               <TouchableOpacity style={{
                 backgroundColor: '#94C11C',
                 padding: 10,
@@ -366,7 +371,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
-},
+  },
 
 });
 
