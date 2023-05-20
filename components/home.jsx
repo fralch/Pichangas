@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Animated, PanResponder, Linking, Modal } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Animated, PanResponder, Linking, Modal, Alert } from 'react-native';
 
 import Cancha from './cancha';
 import Calendario from './calendario';
@@ -112,7 +112,26 @@ function Home() {
     .then((response) => response.json())
     .then((json) => {
       console.log(json);
+      
+      fetch('http://192.168.1.50:3000/canchas')
+      .then((response) => response.json())
+      .then((json) => {
+        setCanchas(json);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        // setLoading(false);
+      });
+      
       setModalVisible(!modalVisible);
+      Alert.alert(
+        "Cancha creada",
+        "La cancha se ha creado correctamente",
+        [
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ]
+      );
+    
     }); 
   }
 
