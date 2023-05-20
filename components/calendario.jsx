@@ -287,7 +287,9 @@ function Calendario(props) {
                                                         <Text style={{ fontSize: 18, fontWeight: 'bold' }} >{hora.data.cliente}</Text>
 
                                                         {hora.data.estado == true ? <Text style={{ fontSize: 14 }} >Horario reservado</Text> : <Text style={{ fontSize: 14 }} >20 min para confirmar la reservación</Text>}
-                                                        {hora.data.estado == true ? <></> : <Button onPress={() => { setModalVisible(true); setH(hora.hora)}}title="Paga con YAPE" color={'#7ead00'}/>}
+                                                        {hora.data.estado == true ? <></> : <Button onPress={() => { setModalVisible(true); setH(hora.hora)}}title="CONFIRMAR" color={'#7ead00'}/>}
+                                                        
+                                                        {hora.data.estado == true ? <></> : <Button onPress={() => { setModalVisible(true); setH(hora.hora)}}title="QUITAR" color={'#555'}/>}
                                                     </View>
 
                                             }
