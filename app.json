@@ -24,7 +24,13 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.fralch.pichangas",
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE"
+       ],
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
