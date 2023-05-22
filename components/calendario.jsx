@@ -54,43 +54,43 @@ function Calendario(props) {
                 email: 'ingfralch@gmail.com',
                 telefono: '961610362',
 
-            }): 
-            setUsuario(JSON.parse(usuario));
-            
+            }) :
+                setUsuario(JSON.parse(usuario));
+
         }
         obtenerUsuario();
         console.log(usuario);
         // console.log(props.route.params);
 
         fetch('http://192.168.1.50:3000/horarios/diario', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            cancha_id: props.route.params.id,
-            usuario_id: usuario.id? usuario.id: 1,
-          })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                cancha_id: props.route.params.id,
+                usuario_id: usuario.id ? usuario.id : 1,
+            })
         })
-          .then((response) => response.json())
-          .then((json) => {
-            const horas_coincididas= horas.map((elemento) => {
-                                            const hora_coincide = json.find((hora) => hora.hora == elemento.hora);
-                                            if (hora_coincide) {
-                                                elemento.disponible = false;
-                                                elemento.data = hora_coincide;
-                                            }
-                                            return elemento;
-                                            
-                                           
-                                            }
-                                        );
-            
-            setHoras(horas_coincididas);
+            .then((response) => response.json())
+            .then((json) => {
+                const horas_coincididas = horas.map((elemento) => {
+                    const hora_coincide = json.find((hora) => hora.hora == elemento.hora);
+                    if (hora_coincide) {
+                        elemento.disponible = false;
+                        elemento.data = hora_coincide;
+                    }
+                    return elemento;
 
-            // console.log(horas_coincididas);
-          });
-      }, []);
+
+                }
+                );
+
+                setHoras(horas_coincididas);
+
+                // console.log(horas_coincididas);
+            });
+    }, []);
 
     const handleDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -138,78 +138,60 @@ function Calendario(props) {
         return <View style={styles.line} />;
     };
 
-    const reservarTurno = (h) => {
-            const fecha = new Date();
-            const year = fecha.getFullYear();
-            const month = String(fecha.getMonth() + 1).padStart(2, '0');
-            const day = String(fecha.getDate()).padStart(2, '0');
-            const hoy = `${year}-${month}-${day}`;
-           
-
-            console.log({hora: h, 
-                estado: false,
-                fecha: hoy,
-                cancha_id: props.route.params.id,
-                usuario_id: usuario.id? usuario.id: 1,
-            });
-            fetch('http://192.168.1.50:3000/horarios', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    hora: h, 
-                    estado: false,
-                    fecha: hoy,
-                    cancha_id: props.route.params.id,
-                    usuario_id: usuario.id? usuario.id: 1,
-                })
+    const confirmarTurno = (id) => {
+        fetch(`http://192.168.1.50:3000/horarios/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                estado: true,
             })
+        })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json);
-                console.log(usuario); 
-            })
-            .then(() => {
-                setHoras(horas.map((hora) => {
-                    if (hora.hora === h) {
-                        hora.disponible = false;
-                        hora.data = {
-                            fecha: dateToString(date),
-                            hora: h,
-                            cliente: 'Haz reservado',
-                            telefono: '123456789',
-                            email: 'ingfralch@gmail.com',
-                            estado: 'pendiente'
-        
-                        }
-                    }
-                    return hora;
-        
-                }));
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-        
-        
+                fetch('http://192.168.1.50:3000/horarios/diario', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cancha_id: props.route.params.id,
+                        usuario_id: usuario.id ? usuario.id : 1,
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        const horas_coincididas = horas.map((elemento) => {
+                            const hora_coincide = json.find((hora) => hora.hora == elemento.hora);
+                            if (hora_coincide) {
+                                elemento.disponible = false;
+                                elemento.data = hora_coincide;
+                            }
+                            return elemento;
 
-        
-        
+
+                        }
+                        );
+
+                        setHoras(horas_coincididas);
+
+                    });
+            })
     }
     const openWhatsAppWithMessage = () => {
         let mensaje = ` 😎⚽ Quisiera confirmar mi reservación 🥅 🏃🏻para el dia ${dateToString(date)} a las ${h}`;
         Linking.openURL('whatsapp://send?phone=961610362&text=' + mensaje);
     };
-    
-           
-        const openYapeApp = async () => {
-            try {
-              await Linking.openURL('yape://app');
-            } catch (error) {
-              console.error('Error al abrir Yape', error);
-            }
-          };
+
+
+    const openYapeApp = async () => {
+        try {
+            await Linking.openURL('yape://app');
+        } catch (error) {
+            console.error('Error al abrir Yape', error);
+        }
+    };
 
     const irCanchaDetalle = () => {
         const parametros = props.route.params;
@@ -217,112 +199,112 @@ function Calendario(props) {
     }
 
     return (
-        !usuario 
-        ? 
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Cargando...</Text></View> 
-        :
-        <View
-            style={[
-                styles.container,
-                {
-                    flexDirection: 'column',
-                },
-            ]}>
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: "center" }} >
-                <Image source={require('../assets/logo.png')} style={{ width: 80, height: 100, marginLeft: 10 }} />
-                <TouchableOpacity onPress={() => setShowDatePicker(true)}
-                    style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexDirection: 'row',
-                    }}
-                >
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: 10 }} >{dateToString(date)}</Text>
-                    <AntDesign name="down" size={24} color="black" />
-                </TouchableOpacity>
-                {showDatePicker && (
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode="date"
-                        is24Hour={true}
-                        display="calendar"
-                        onChange={handleDateChange}
-                    />
-                )}
-            </View>
-                <TouchableOpacity style={{flexDirection:"row"}} onPress={irCanchaDetalle} >
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginRight:10, marginTop:20, marginBottom:5 }} >Fotos de {props.route.params.cancha}</Text>
-                    <AntDesign name="right" size={20} color="black" style={{marginTop:24}} />
-                </TouchableOpacity>
-            <View style={{ flex: 5 }} >
-                <ScrollView showsVerticalScrollIndicator={false} >
+        !usuario
+            ?
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Cargando...</Text></View>
+            :
+            <View
+                style={[
+                    styles.container,
                     {
-                        horas.map((hora, index) => {
-                            return (
-                                <View key={index} style={{ flex: 1, marginHorizontal: 5, padding: 10, marginVertical: 5 }} >
-                                    <HorizontalLine />
+                        flexDirection: 'column',
+                    },
+                ]}>
+                <View style={{ flex: 1, flexDirection: 'row', alignItems: "center" }} >
+                    <Image source={require('../assets/logo.png')} style={{ width: 80, height: 100, marginLeft: 10 }} />
+                    <TouchableOpacity onPress={() => setShowDatePicker(true)}
+                        style={{
+                            flex: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexDirection: 'row',
+                        }}
+                    >
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: 10 }} >{dateToString(date)}</Text>
+                        <AntDesign name="down" size={24} color="black" />
+                    </TouchableOpacity>
+                    {showDatePicker && (
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={date}
+                            mode="date"
+                            is24Hour={true}
+                            display="calendar"
+                            onChange={handleDateChange}
+                        />
+                    )}
+                </View>
+                <TouchableOpacity style={{ flexDirection: "row" }} onPress={irCanchaDetalle} >
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginRight: 10, marginTop: 20, marginBottom: 5 }} >Fotos de {props.route.params.cancha}</Text>
+                    <AntDesign name="right" size={20} color="black" style={{ marginTop: 24 }} />
+                </TouchableOpacity>
+                <View style={{ flex: 5 }} >
+                    <ScrollView showsVerticalScrollIndicator={false} >
+                        {
+                            horas.map((hora, index) => {
+                                return (
+                                    <View key={index} style={{ flex: 1, marginHorizontal: 5, padding: 10, marginVertical: 5 }} >
+                                        <HorizontalLine />
 
-                                    <View style={{
-                                        flex: 1,
-                                        backgroundColor: '#F2F2F2',
-                                        borderRadius: 10,
-                                        padding: 10,
-                                    }}>
-                                        <Text style={{ fontSize: 18 }} >{hora.hora}</Text>
-                                        <TouchableOpacity
-                                            style={{
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                            }}
-                                            onPress={() => {hora.disponible ? reservarTurno(hora.hora):  ()=>{}   }}
-                                        >
-                                            {
-                                                hora.disponible ?
-                                                    <AntDesign name="plussquare" size={40} color="#94C11C" />
-                                                    :
-                                                    <View style={{ alignItems: 'center' }} >
-                                                        {hora.data.estado == true ? <AntDesign name="checkcircle" size={24} color="#94C11C" /> : <AntDesign name="clockcircleo" size={24} color="#94C11C" />}
-                                                        <Text style={{ fontSize: 18, fontWeight: 'bold' }} >{hora.data.cliente}</Text>
+                                        <View style={{
+                                            flex: 1,
+                                            backgroundColor: '#F2F2F2',
+                                            borderRadius: 10,
+                                            padding: 10,
+                                        }}>
+                                            <Text style={{ fontSize: 18 }} >{hora.hora}</Text>
+                                            <TouchableOpacity
+                                                style={{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                }}
+                                                onPress={() => { hora.disponible ? confirmarTurno(hora.data.id) : () => { } }}
+                                            >
+                                                {
+                                                    hora.disponible ?
+                                                        <AntDesign name="plussquare" size={40} color="#94C11C" />
+                                                        :
+                                                        <View style={{ alignItems: 'center' }} >
+                                                            {hora.data.estado == true ? <AntDesign name="checkcircle" size={24} color="#94C11C" /> : <AntDesign name="clockcircleo" size={24} color="#94C11C" />}
 
-                                                        {hora.data.estado == true ? <Text style={{ fontSize: 14 }} >Horario reservado</Text> : <Text style={{ fontSize: 14 }} >20 min para confirmar la reservación</Text>}
-                                                        {hora.data.estado == true ? <></> : <Button onPress={() => { setModalVisible(true); setH(hora.hora)}}title="CONFIRMAR" color={'#7ead00'}/>}
-                                                        
-                                                        {hora.data.estado == true ? <></> : <Button onPress={() => { setModalVisible(true); setH(hora.hora)}}title="QUITAR" color={'#555'}/>}
-                                                    </View>
+                                                            {hora.data.estado == true ? <Text style={{ fontSize: 14 }} >Horario reservado</Text> : <Text style={{ fontSize: 14 }} >20 min para confirmar la reservación</Text>}
+                                                            {hora.data.estado == true ? <></> : <Button onPress={() => { confirmarTurno(hora.data.id) }} title="CONFIRMAR" color={'#7ead00'} />}
 
-                                            }
+                                                            {hora.data.estado == true ? <></> : <Button onPress={() => { confirmarTurno(hora.data.id) }} title="QUITAR" color={'#555'} />}
+                                                        </View>
 
-                                        </TouchableOpacity>
+                                                }
 
+                                            </TouchableOpacity>
+
+                                        </View>
                                     </View>
-                                </View>
-                            )
-                        })
-                    }
+                                )
+                            })
+                        }
 
-                </ScrollView>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
-                        setModalVisible(!modalVisible);
-                    }}
-                >
-                    <View style={{ marginTop: '30%', backgroundColor: '#fff', padding: 16 , elevation: 5, width:'80%', marginLeft:'10%', }}>
-                        
-                            <Image  source={require('../img/qr/qrFrank.jpg')} 
-                                    style={{ width: 300, 
-                                            height: 300, 
-                                            padding: 0,
-                                            alignSelf: 'center',
-                                            
-                                        }} />
-                            
-                            <Text style={{ alignSelf:"center", textAlign:"center"}}> 
+                    </ScrollView>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            Alert.alert("Modal has been closed.");
+                            setModalVisible(!modalVisible);
+                        }}
+                    >
+                        <View style={{ marginTop: '30%', backgroundColor: '#fff', padding: 16, elevation: 5, width: '80%', marginLeft: '10%', }}>
+
+                            <Image source={require('../img/qr/qrFrank.jpg')}
+                                style={{
+                                    width: 300,
+                                    height: 300,
+                                    padding: 0,
+                                    alignSelf: 'center',
+
+                                }} />
+
+                            <Text style={{ alignSelf: "center", textAlign: "center" }}>
                                 Escanea el código QR con tu Yape y paga tu reservación
                             </Text>
 
@@ -341,33 +323,33 @@ function Calendario(props) {
                                     elevation: 5,
                                 }}
                             >
-                              <Text style={{
-                                color: '#fff',
-                                fontWeight: 'bold',
-                                fontSize: 16,
-                                marginRight: 10,
-                                marginBottom: 2,
-                                
-                              }}>
-                                <FontAwesome name="whatsapp" size={24} color="white" />  WhatsApp
-                              </Text>
+                                <Text style={{
+                                    color: '#fff',
+                                    fontWeight: 'bold',
+                                    fontSize: 16,
+                                    marginRight: 10,
+                                    marginBottom: 2,
+
+                                }}>
+                                    <FontAwesome name="whatsapp" size={24} color="white" />  WhatsApp
+                                </Text>
                             </TouchableOpacity>
-                            
-                            
+
+
                             <Button
                                 onPress={() => {
                                     setModalVisible(!modalVisible);
                                 }}
                                 title="Cerrar"
                                 color={'#555'}
-                                
+
                             />
-                      
-                    </View>
-                </Modal>
-                
+
+                        </View>
+                    </Modal>
+
+                </View>
             </View>
-        </View>
     );
 }
 const styles = StyleSheet.create({
