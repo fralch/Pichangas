@@ -150,35 +150,52 @@ function Calendario(props) {
         })
             .then((response) => response.json())
             .then((json) => {
-                fetch('http://192.168.1.50:3000/horarios/diario', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        cancha_id: props.route.params.id,
-                        usuario_id: usuario.id ? usuario.id : 1,
+                if (json.affected == 1) {
+                    console.log("estoy dentro "); 
+                    fetch('http://192.168.1.50:3000/horarios/diario', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            cancha_id: props.route.params.id,
+                            usuario_id: usuario.id ? usuario.id : 1,
+                        })
                     })
-                })
-                    .then((response) => response.json())
-                    .then((json) => {
-                        const horas_coincididas = horas.map((elemento) => {
-                            const hora_coincide = json.find((hora) => hora.hora == elemento.hora);
-                            if (hora_coincide) {
-                                elemento.disponible = false;
-                                elemento.data = hora_coincide;
+                        .then((response) => response.json())
+                        .then((json) => {
+                            const horas_coincididas = horas.map((elemento) => {
+                                const hora_coincide = json.find((hora) => hora.hora == elemento.hora);
+                                if (hora_coincide) {
+                                    elemento.disponible = false;
+                                    elemento.data = hora_coincide;
+                                }
+                                return elemento;
+
+
                             }
-                            return elemento;
+                            );
 
+                            setHoras(horas_coincididas);
 
-                        }
-                        );
+                        });
+                }
 
-                        setHoras(horas_coincididas);
-
-                    });
             })
     }
+
+    const removerTurno = (id) => {
+        fetch(`http://192.168.1.50:3000/horarios/${id}`, {
+            method: 'DELETE',
+
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                Alert.alert('Turno eliminado');
+            })
+    }
+
     const openWhatsAppWithMessage = () => {
         let mensaje = ` 😎⚽ Quisiera confirmar mi reservación 🥅 🏃🏻para el dia ${dateToString(date)} a las ${h}`;
         Linking.openURL('whatsapp://send?phone=961610362&text=' + mensaje);
@@ -270,7 +287,7 @@ function Calendario(props) {
                                                             {hora.data.estado == true ? <Text style={{ fontSize: 14 }} >Horario reservado</Text> : <Text style={{ fontSize: 14 }} >20 min para confirmar la reservación</Text>}
                                                             {hora.data.estado == true ? <></> : <Button onPress={() => { confirmarTurno(hora.data.id) }} title="CONFIRMAR" color={'#7ead00'} />}
 
-                                                            {hora.data.estado == true ? <></> : <Button onPress={() => { confirmarTurno(hora.data.id) }} title="QUITAR" color={'#555'} />}
+                                                            {hora.data.estado == true ? <></> : <Button onPress={() => { removerTurno(hora.data.id) }} title="QUITAR" color={'#555'} />}
                                                         </View>
 
                                                 }
