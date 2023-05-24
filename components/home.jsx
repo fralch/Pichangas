@@ -75,7 +75,7 @@ function Home() {
   };
   useEffect(() => {
     // accediendo a la api y obtener las canchas
-    fetch('http://192.168.1.50:3000/canchas')
+    fetch('http://162.248.55.24:3000/canchas')
       .then((response) => response.json())
       .then((json) => {
         setCanchas(json);

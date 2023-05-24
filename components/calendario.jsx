@@ -62,7 +62,7 @@ function Calendario(props) {
         console.log(usuario);
         // console.log(props.route.params);
 
-        fetch('http://192.168.1.50:3000/horarios/diario', {
+        fetch('http://162.248.55.24:3000/horarios/diario', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -152,7 +152,7 @@ function Calendario(props) {
                 cancha_id: props.route.params.id,
                 usuario_id: usuario.id? usuario.id: 1,
             });
-            fetch('http://192.168.1.50:3000/horarios', {
+            fetch('http://162.248.55.24:3000/horarios', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

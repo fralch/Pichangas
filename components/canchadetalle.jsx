@@ -33,7 +33,7 @@ function CanchaDetalle(props) {
                                     padding: 10,
                                     elevation: 5,
                                 }}>
-                                    <Image source={{ uri: "http://192.168.1.50:3000/uploads/" + foto.fotos }} style={{ width: '95%', height: 200, marginLeft: 10 }} />
+                                    <Image source={{ uri: "http://162.248.55.24:3000/uploads/" + foto.fotos }} style={{ width: '95%', height: 200, marginLeft: 10 }} />
                                     <Text style={{ fontSize: 18, marginRight: 20, }}>{foto.descripcion}</Text>
                                 </View>
                             ))
