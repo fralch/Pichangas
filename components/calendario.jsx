@@ -62,7 +62,7 @@ function Calendario(props) {
         console.log(usuario);
         // console.log(props.route.params);
 
-        fetch('http://192.168.1.50:3000/horarios/diario', {
+        fetch('http://162.248.55.24:3000/horarios/diario', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -139,7 +139,7 @@ function Calendario(props) {
     };
 
     const confirmarTurno = (id) => {
-        fetch(`http://192.168.1.50:3000/horarios/${id}`, {
+        fetch(`http://162.248.55.24:3000/horarios/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
@@ -152,7 +152,7 @@ function Calendario(props) {
             .then((json) => {
                 if (json.affected == 1) {
                     console.log("estoy dentro "); 
-                    fetch('http://192.168.1.50:3000/horarios/diario', {
+                    fetch('http://162.248.55.24:3000/horarios/diario', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -185,7 +185,7 @@ function Calendario(props) {
     }
 
     const removerTurno = (id) => {
-        fetch(`http://192.168.1.50:3000/horarios/${id}`, {
+        fetch(`http://162.248.55.24:3000/horarios/${id}`, {
             method: 'DELETE',
 
         })

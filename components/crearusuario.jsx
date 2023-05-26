@@ -48,7 +48,7 @@ function CrearUsuario(props) {
                 return;
             }
 
-            fetch('http://192.168.1.50:3000/usuarios', {
+            fetch('http://162.248.55.24:3000/usuarios', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -71,7 +71,7 @@ function CrearUsuario(props) {
     };
 
     const iniciarSesion = () => {
-        fetch('http://192.168.1.50:3000/usuarios/login', {
+        fetch('http://162.248.55.24:3000/usuarios/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

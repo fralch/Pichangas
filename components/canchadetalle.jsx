@@ -26,7 +26,7 @@ function CanchaDetalle(props) {
     };
 
     const uploadImage = async (imageUri) => {
-        const apiUrl = `http://192.168.1.50:3000/canchas/fotos/${props.route.params.id}`;
+        const apiUrl = `http://162.248.55.24:3000/canchas/fotos/${props.route.params.id}`;
         const formData = new FormData();
 
         // Agregar la imagen al formulario de datos
@@ -93,7 +93,7 @@ function CanchaDetalle(props) {
                                         padding: 10,
                                         elevation: 5,
                                     }}>
-                                        <Image source={{ uri: "http://192.168.1.50:3000/uploads/" + foto.fotos }} style={{ width: '95%', height: 200, marginLeft: 10 }} />
+                                        <Image source={{ uri: "http://162.248.55.24:3000/uploads/" + foto.fotos }} style={{ width: '95%', height: 200, marginLeft: 10 }} />
                                         <Text style={{ fontSize: 18, marginRight: 20, }}>{foto.descripcion}</Text>
                                     </View>
                                 ))

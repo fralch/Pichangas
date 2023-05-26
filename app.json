@@ -29,11 +29,16 @@
       "permissions": [
         "READ_EXTERNAL_STORAGE",
         "android.permission.READ_EXTERNAL_STORAGE"
-       ],
+      ],
       "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "861c5cf7-7903-4b7a-9dcf-fd84f8dc67c0"
+      }
     }
   }
 }

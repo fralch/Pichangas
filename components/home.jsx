@@ -89,7 +89,7 @@ function Home() {
   };
   useEffect(() => {
     // accediendo a la api y obtener las canchas
-    fetch('http://192.168.1.50:3000/canchas')
+    fetch('http://162.248.55.24:3000/canchas')
       .then((response) => response.json())
       .then((json) => {
         setCanchas(json);
@@ -102,7 +102,7 @@ function Home() {
 
   const enviarDatosCancha = () => {
     // console.log(datos_cancha);
-    fetch('http://192.168.1.50:3000/canchas',{
+    fetch('http://162.248.55.24:3000/canchas',{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -113,7 +113,7 @@ function Home() {
     .then((json) => {
       console.log(json);
       
-      fetch('http://192.168.1.50:3000/canchas')
+      fetch('http://162.248.55.24:3000/canchas')
       .then((response) => response.json())
       .then((json) => {
         setCanchas(json);
