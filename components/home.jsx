@@ -13,7 +13,61 @@ import { FontAwesome5 } from '@expo/vector-icons';
 function Home() {
     const [searchQuery, setSearchQuery] = React.useState('');
     const navigation = useNavigation();
-    const [canchas, setCanchas] = useState([]);
+    const [canchas, setCanchas] = useState([
+      {
+        "cancha": "Cancha la Rivera",
+        "cretedAt": "2023-05-23T16:10:45.000Z",
+        "direccion": "pasaje sin numero",
+        "email": "ccccc@correo.com",
+        "estado": true,
+        "fotos": "[{\"descripcion\":\"esta es la descripcion\",\"fotos\":\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9GT_2VQQlz0WKEM5iYzf9lAo1BSFGWmg-9eLghS7yIZPMNDhZ08t6FEzU6HmviAQJl_U&usqp=CAU\"},{\"descripcion\":\"Nueva descripción \",\"fotos\":\"1685124146150-image.jpg\"},{\"descripcion\":\"Descripción de las canchitas \",\"fotos\":\"1691791564241-image.jpg\"},{\"descripcion\":\"Canchita deportiva de fútbol \",\"fotos\":\"1691791599396-image.jpg\"}]",
+        "horario": "10am - 10pm",
+        "id": 1,
+        "password": "contraseña111",
+        "telefono": "11111111",
+        "usuario": "chancha1"
+      }, 
+      {
+        "cancha": "Cancha Huayna",
+        "cretedAt": "2023-05-23T16:10:45.000Z",
+        "direccion": "pasaje sin numero",
+        "email": "ccccc@correo.com",
+        "estado": true,
+        "fotos": "[{\"descripcion\":\"esta es la descripcion\",\"fotos\":\"https://websystemperu.com/web/121728f/sistema-reservas-canchas.jpg\"},{\"descripcion\":\"Nueva descripción \",\"fotos\":\"1685124146150-image.jpg\"},{\"descripcion\":\"Descripción de las canchitas \",\"fotos\":\"1691791564241-image.jpg\"},{\"descripcion\":\"Canchita deportiva de fútbol \",\"fotos\":\"1691791599396-image.jpg\"}]",
+        "horario": "10am - 10pm",
+        "id": 1,
+        "password": "contraseña111",
+        "telefono": "11111111",
+        "usuario": "chancha1"
+      }, 
+      {
+        "cancha": "Cancha los Reyes",
+        "cretedAt": "2023-05-23T16:10:45.000Z",
+        "direccion": "pasaje sin numero",
+        "email": "ccccc@correo.com",
+        "estado": true,
+        "fotos": "[{\"descripcion\":\"esta es la descripcion\",\"fotos\":\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAGU1wVJ0-UUhXtWhqqRCM5-TXJCiWGlt_5AbHNwiNqVW5fJTtxzEf6pZApJIAEEfC79Q&usqp=CAU\"},{\"descripcion\":\"Nueva descripción \",\"fotos\":\"1685124146150-image.jpg\"},{\"descripcion\":\"Descripción de las canchitas \",\"fotos\":\"1691791564241-image.jpg\"},{\"descripcion\":\"Canchita deportiva de fútbol \",\"fotos\":\"1691791599396-image.jpg\"}]",
+        "horario": "10am - 10pm",
+        "id": 1,
+        "password": "contraseña111",
+        "telefono": "11111111",
+        "usuario": "chancha1"
+      }, 
+      {
+        "cancha": "Cancha de prueba",
+        "cretedAt": "2023-05-23T16:10:45.000Z",
+        "direccion": "pasaje sin numero",
+        "email": "ccccc@correo.com",
+        "estado": true,
+        "fotos": "[{\"descripcion\":\"esta es la descripcion\",\"fotos\":\"https://static.wixstatic.com/media/a74d9b_f677ff68338f43cf87e470b0312b7cea~mv2.jpg/v1/fill/w_1000,h_563,al_c,q_85,usm_0.66_1.00_0.01/a74d9b_f677ff68338f43cf87e470b0312b7cea~mv2.jpg\"},{\"descripcion\":\"Nueva descripción \",\"fotos\":\"1685124146150-image.jpg\"},{\"descripcion\":\"Descripción de las canchitas \",\"fotos\":\"1691791564241-image.jpg\"},{\"descripcion\":\"Canchita deportiva de fútbol \",\"fotos\":\"1691791599396-image.jpg\"}]",
+        "horario": "10am - 10pm",
+        "id": 1,
+        "password": "contraseña111",
+        "telefono": "11111111",
+        "usuario": "chancha1"
+      }, 
+    
+    ]);
   //-----------------------
         // Estado que indica si el menú está visible o no
         const [menuVisible, setMenuVisible] = useState(false);
@@ -78,7 +132,8 @@ function Home() {
     fetch('http://162.248.55.24:3000/canchas')
       .then((response) => response.json())
       .then((json) => {
-        setCanchas(json);
+        console.log(json);
+        // setCanchas(json);
       })
       .catch((error) => console.error(error))
       .finally(() => {
